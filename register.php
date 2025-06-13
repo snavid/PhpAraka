@@ -4,7 +4,7 @@ require_once 'user_functions.php';
 
 // Redirect if already logged in
 if (isLoggedIn()) {
-    header('Location: index.php');
+    header('Location: todo.php');
     exit;
 }
 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         if (registerUser($mysqli, $username, $email, $password)) {
             // Registration successful and user is already logged in
-            header('Location: index.php');
+            header('Location: todo.php');
             exit;
         } else {
             $error = 'Username or email already exists';
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - PHP Todo List</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="style.css?v=<?php echo time(); ?>">
 </head>
 <body>
     <div class="container">
