@@ -1,6 +1,15 @@
 <?php
 require_once 'config.php';
 require_once 'functions.php';
+require_once 'user_functions.php';
+
+// Check if user is logged in
+if (!isLoggedIn()) {
+    header('Location: login.php');
+    exit;
+}
+
+$userId = getCurrentUserId();
 
 // Check if ID is provided
 if (!isset($_GET['id']) || empty($_GET['id'])) {
@@ -9,9 +18,9 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 }
 
 $taskId = $_GET['id'];
-$task = getTaskById($mysqli, $taskId);
+$task = getTaskById($mysqli, $userId, $taskId);
 
-// If task doesn't exist, redirect
+// If task doesn't exist or doesn't belong to user, redirect
 if (!$task) {
     header('Location: index.php');
     exit;
@@ -23,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_task'])) {
     $description = trim($_POST['description']);
     
     if (!empty($taskName)) {
-        updateTask($mysqli, $taskId, $taskName, $description);
+        updateTask($mysqli, $userId, $taskId, $taskName, $description);
         header('Location: index.php');
         exit;
     }
@@ -40,7 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_task'])) {
 </head>
 <body>
     <div class="container">
-        <h1>Edit Task</h1>
+        <div class="header">
+            <h1>Edit Task</h1>
+            <div class="user-info">
+                Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                <a href="logout.php" class="btn-logout">Logout</a>
+            </div>
+        </div>
         
         <div class="add-task-form">
             <form method="post" action="">
@@ -54,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_task'])) {
                 </div>
                 <div class="form-actions">
                     <button type="submit" name="update_task">Update Task</button>
-                    <a href="index.php" class="btn-cancel" style="display: inline-block; margin-left: 10px; background-color: #7f8c8d; padding: 10px 20px; color: #fff; text-decoration: none; border-radius: 4px;">Cancel</a>
+                    <a href="index.php" class="btn-cancel">Cancel</a>
                 </div>
             </form>
         </div>

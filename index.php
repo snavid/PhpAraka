@@ -1,9 +1,18 @@
 <?php
 require_once 'config.php';
 require_once 'functions.php';
+require_once 'user_functions.php';
 
-// Get all tasks
-$tasks = getTasks($mysqli);
+// Check if user is logged in
+if (!isLoggedIn()) {
+    header('Location: login.php');
+    exit;
+}
+
+$userId = getCurrentUserId();
+
+// Get all tasks for the current user
+$tasks = getTasks($mysqli, $userId);
 
 // Handle task addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_task'])) {
@@ -11,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_task'])) {
     $description = trim($_POST['description']);
     
     if (!empty($taskName)) {
-        addTask($mysqli, $taskName, $description);
+        addTask($mysqli, $userId, $taskName, $description);
         header('Location: index.php');
         exit;
     }
@@ -28,7 +37,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_task'])) {
 </head>
 <body>
     <div class="container">
-        <h1>My Todo List</h1>
+        <div class="header">
+            <h1>My Todo List</h1>
+            <div class="user-info">
+                Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                <a href="logout.php" class="btn-logout">Logout</a>
+            </div>
+        </div>
         
         <!-- Add Task Form -->
         <div class="add-task-form">
