@@ -4,7 +4,7 @@ require_once 'user_functions.php';
 
 // Redirect if already logged in
 if (isLoggedIn()) {
-    header('Location: todo.php');
+    header('Location: index.php');
     exit;
 }
 
@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         if (registerUser($mysqli, $username, $email, $password)) {
             // Registration successful and user is already logged in
-            header('Location: todo.php');
+            header('Location: index.php');
             exit;
         } else {
             $error = 'Username or email already exists';

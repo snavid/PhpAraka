@@ -4,7 +4,7 @@ require_once 'user_functions.php';
 
 // Redirect if already logged in
 if (isLoggedIn()) {
-    header('Location: todo.php');
+    header('Location: index.php');
     exit;
 }
 
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Please fill in all fields';
     } else {
         if (loginUser($mysqli, $username, $password)) {
-            header('Location: todo.php');
+            header('Location: index.php');
             exit;
         } else {
             $error = 'Invalid username or password';

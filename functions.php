@@ -48,6 +48,13 @@ function completeTask($mysqli, $userId, $id) {
     return $stmt->execute();
 }
 
+
+// function UnMarkcompleteTask($mysqli, $userId, $id) {
+//     $stmt = $mysqli->prepare("UPDATE tasks SET status = 'incomplete', completed_at = CURRENT_TIMESTAMP WHERE id = ? AND user_id = ?");
+//     $stmt->bind_param("ii", $id, $userId);
+//     return $stmt->execute();
+// }
+
 /**
  * Delete a task
  */
