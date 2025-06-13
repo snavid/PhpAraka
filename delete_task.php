@@ -7,7 +7,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     $taskId = $_GET['id'];
     
     // Delete the task
-    deleteTask($pdo, $taskId);
+    deleteTask($mysqli, $taskId);
 }
 
 // Redirect back to index page

@@ -9,7 +9,7 @@ if (!isset($_GET['id']) || empty($_GET['id'])) {
 }
 
 $taskId = $_GET['id'];
-$task = getTaskById($pdo, $taskId);
+$task = getTaskById($mysqli, $taskId);
 
 // If task doesn't exist, redirect
 if (!$task) {
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_task'])) {
     $description = trim($_POST['description']);
     
     if (!empty($taskName)) {
-        updateTask($pdo, $taskId, $taskName, $description);
+        updateTask($mysqli, $taskId, $taskName, $description);
         header('Location: index.php');
         exit;
     }

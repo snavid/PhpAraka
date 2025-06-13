@@ -3,7 +3,7 @@ require_once 'config.php';
 require_once 'functions.php';
 
 // Get all tasks
-$tasks = getTasks($pdo);
+$tasks = getTasks($mysqli);
 
 // Handle task addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_task'])) {
@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_task'])) {
     $description = trim($_POST['description']);
     
     if (!empty($taskName)) {
-        addTask($pdo, $taskName, $description);
+        addTask($mysqli, $taskName, $description);
         header('Location: index.php');
         exit;
     }

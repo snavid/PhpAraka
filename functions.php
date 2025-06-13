@@ -2,49 +2,55 @@
 /**
  * Get all tasks from the database
  */
-function getTasks($pdo) {
-    $stmt = $pdo->query("SELECT * FROM tasks ORDER BY created_at DESC");
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+function getTasks($mysqli) {
+    $result = $mysqli->query("SELECT * FROM tasks ORDER BY created_at DESC");
+    return $result->fetch_all(MYSQLI_ASSOC);
 }
 
 /**
  * Add a new task
  */
-function addTask($pdo, $taskName, $description = '') {
-    $stmt = $pdo->prepare("INSERT INTO tasks (task_name, description) VALUES (?, ?)");
-    return $stmt->execute([$taskName, $description]);
+function addTask($mysqli, $taskName, $description = '') {
+    $stmt = $mysqli->prepare("INSERT INTO tasks (task_name, description) VALUES (?, ?)");
+    $stmt->bind_param("ss", $taskName, $description);
+    return $stmt->execute();
 }
 
 /**
  * Get a single task by ID
  */
-function getTaskById($pdo, $id) {
-    $stmt = $pdo->prepare("SELECT * FROM tasks WHERE id = ?");
-    $stmt->execute([$id]);
-    return $stmt->fetch(PDO::FETCH_ASSOC);
+function getTaskById($mysqli, $id) {
+    $stmt = $mysqli->prepare("SELECT * FROM tasks WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result->fetch_assoc();
 }
 
 /**
  * Update a task
  */
-function updateTask($pdo, $id, $taskName, $description) {
-    $stmt = $pdo->prepare("UPDATE tasks SET task_name = ?, description = ? WHERE id = ?");
-    return $stmt->execute([$taskName, $description, $id]);
+function updateTask($mysqli, $id, $taskName, $description) {
+    $stmt = $mysqli->prepare("UPDATE tasks SET task_name = ?, description = ? WHERE id = ?");
+    $stmt->bind_param("ssi", $taskName, $description, $id);
+    return $stmt->execute();
 }
 
 /**
  * Mark a task as completed
  */
-function completeTask($pdo, $id) {
-    $stmt = $pdo->prepare("UPDATE tasks SET status = 'completed', completed_at = CURRENT_TIMESTAMP WHERE id = ?");
-    return $stmt->execute([$id]);
+function completeTask($mysqli, $id) {
+    $stmt = $mysqli->prepare("UPDATE tasks SET status = 'completed', completed_at = CURRENT_TIMESTAMP WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    return $stmt->execute();
 }
 
 /**
  * Delete a task
  */
-function deleteTask($pdo, $id) {
-    $stmt = $pdo->prepare("DELETE FROM tasks WHERE id = ?");
-    return $stmt->execute([$id]);
+function deleteTask($mysqli, $id) {
+    $stmt = $mysqli->prepare("DELETE FROM tasks WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    return $stmt->execute();
 }
 ?> 

@@ -7,7 +7,7 @@ if (isset($_GET['id']) && !empty($_GET['id'])) {
     $taskId = $_GET['id'];
     
     // Mark task as completed
-    completeTask($pdo, $taskId);
+    completeTask($mysqli, $taskId);
 }
 
 // Redirect back to index page
