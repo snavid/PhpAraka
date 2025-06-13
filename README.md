@@ -70,10 +70,6 @@ PhpAraka/
 ├── index.php           # Main todo list interface
 ├── login.php           # User login
 ├── register.php        # User registration
-├── logout.php          # User logout
-├── edit_task.php       # Edit task functionality
-├── delete_task.php     # Delete task functionality
-├── complete_task.php   # Complete task functionality
 ├── style.css           # Main stylesheet
 ├── landing.css         # Landing page styles
 ├── index.html          # Landing page
